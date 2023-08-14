@@ -82,6 +82,9 @@ export default function MenuAppBar() {
                 <ListItem button onClick={() => redirectRoute("/stocks")}>
                   <ListItemText primary="Stocks" />
                 </ListItem>
+                <ListItem button onClick={() => redirectRoute("/shortlists")}>
+                  <ListItemText primary="Shortlists" />
+                </ListItem>
                 <ListItem button onClick={clickFeatures}>
                   <ListItemText primary="Features" />
                   {openNested ? <ExpandLess /> : <ExpandMore />}

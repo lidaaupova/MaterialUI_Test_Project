@@ -12,6 +12,7 @@ import Register from './pages/Register.js';
 import Stocks from './pages/Stocks.js';
 import Header from './components/Header.js';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import Shortlists from './pages/Shortlists';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/stocks" element={<Stocks />} />
+          <Route path="/shortlists" element={<Shortlists />} />
           <Route path="/about" element={<About />} />
           <Route path="/feature1" element={<Feature1 />} />
           <Route path="/feature2" element={<Feature2 />} />
