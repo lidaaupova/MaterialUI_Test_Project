@@ -1,41 +1,167 @@
-import { Paper, Typography, Grid, Button, Container } from "@mui/material";
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import Menu from '@mui/material/Menu';
 
-const Header = ({classes}) => {
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
+
+import { useNavigate } from "react-router-dom";
+
+export default function MenuAppBar() {
+  
+  let navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openNested, setOpenNested] = React.useState(null);
+  const [anchorEl2, setAnchorEl2] = React.useState(null); 
+
+  const clickRightMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const clickFeatures = () => {
+    setOpenNested(!openNested);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const clickLeftMenu = event => {
+    setOpenNested(false);
+    setAnchorEl2(event.currentTarget);
+  };
+
+  /* routePaths are defined in App.js */
+  const redirectRoute = routePath => {
+    navigate(routePath);
+    setAnchorEl(null);
+  };
+
 
   return (
-    <Paper
-      className={classes.mainFeaturesPost}
-      style={{backgroundImage: `url(https://images.unsplash.com/photo-1682173051316-86ad29c08b6a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1887&q=80)`}}
-    >
-      <Container fixed>
-        <Grid container>
-          <div className={classes.overlay}/>
-          <Grid item md={6}>
-            <div className={classes.mainFeaturesPostContent}>
-              <Typography
-                component='h1'
-                variant='h3'
-                color='inherit'
-                gutterBottom
-              >
-                Web Developer Blog
-              </Typography>
-              <Typography
-                component='h5'
-                color='inherit'
-                paragraph
-              >
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Itaque ex esse autem adipisci omnis reiciendis quo, reprehenderit eos ratione voluptatibus veritatis sunt, nam voluptatem! Earum?
-              </Typography>
-              <Button variant='contained' color='secondary'>
-                Learn more
-              </Button>
-            </div>
-          </Grid>
-        </Grid>
-      </Container>
-    </Paper>
-  )
-}
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={clickLeftMenu}
+          >
+            <MenuIcon />
+          </IconButton>
 
-export default Header;
+
+          {/* Left hand side */}
+
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl2}
+            open={Boolean(anchorEl2)}
+            onClose={() => {setAnchorEl2(null);setOpenNested(true);}}>
+            <List
+                component="nav"
+                aria-labelledby="nested-list-subheader"
+              >
+                <ListItem button onClick={() => redirectRoute("/")}>
+                  <ListItemText primary="Home" />
+                </ListItem>
+                <ListItem button onClick={() => redirectRoute("/stocks")}>
+                  <ListItemText primary="Stocks" />
+                </ListItem>
+                <ListItem button onClick={() => redirectRoute("/shortlists")}>
+                  <ListItemText primary="Shortlists" />
+                </ListItem>
+                <ListItem button onClick={clickFeatures}>
+                  <ListItemText primary="Features" />
+                  {openNested ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={openNested} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                  <ListItem button onClick={() => redirectRoute("/Feature1")}>
+                      <ListItemText primary="Feature1" />
+                    </ListItem>
+                  <ListItem button onClick={() => redirectRoute("/Feature2")}>
+                      <ListItemText primary="Feature2" />
+                    </ListItem>
+                    <ListItem button onClick={() => redirectRoute("/Feature3")}>
+                      <ListItemText primary="Feature3" />
+                    </ListItem>
+                  </List>
+                </Collapse>
+                <ListItem button  onClick={() => redirectRoute("/About")}>
+                  <ListItemText primary="About" />
+                </ListItem>
+              </List>
+          </Menu>
+
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Stocks App
+          </Typography>
+
+          {/* Right hand side */}
+
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={clickRightMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <ListItem button onClick={() => redirectRoute("/profile")}>
+                  <ListItemText primary="Profile" />
+                </ListItem>
+                <ListItem button onClick={() => redirectRoute("/myaccount")}>
+                  <ListItemText primary="My Account" />
+                </ListItem>                
+                <ListItem button onClick={() => redirectRoute("/login")}>
+                  <ListItemText primary="Login" />
+                </ListItem>
+                <ListItem button onClick={() => redirectRoute("/logout")}>
+                  <ListItemText primary="Logout" />
+                </ListItem>
+                <ListItem button onClick={() => redirectRoute("/register")}>
+                  <ListItemText primary="Register" />
+                </ListItem>
+              </Menu>
+
+        </Toolbar>
+      </AppBar>
+    </Box>
+
+
+
+  );
+}
